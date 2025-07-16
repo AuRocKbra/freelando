@@ -1,22 +1,30 @@
-import { Component } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RadioOptionComponent } from '../../shared/components/radio-option/radio-option.component';
+import { ButtonComponent } from '../../shared/components/button/button.component';
 
 const MODULES = [
   CommonModule,
   ReactiveFormsModule
 ];
 
+const COMPONENTS = [
+  RadioOptionComponent,
+  ButtonComponent
+]
+
 @Component({
   selector: 'app-cadastro-form',
   standalone: true,
   imports: [
-    ...MODULES
+    ...MODULES,
+    ...COMPONENTS
   ],
   templateUrl: './cadastro-form.component.html',
   styleUrls: ['./cadastro-form.component.scss']
 })
-export class CadastroFormComponent {
+export class CadastroFormComponent implements OnInit{
   cadastroForm!: FormGroup;
 
   areasAtuacao = [
@@ -45,4 +53,19 @@ export class CadastroFormComponent {
       description: '(6 anos ou mais)'
     }
   ];
+
+  constructor(private fb: FormBuilder){}
+
+  ngOnInit(): void {
+      this.cadastroForm = this.fb.group({
+        areasAtuacao:['',Validators.required],
+        niveisExperiencia:['',Validators.required]
+      });
+  }
+
+  onAreaChange(area:string){
+    this.cadastroForm.get('areaAtuacao')?.setValue(area);
+  }
+
+  onProximo(){}
 }
