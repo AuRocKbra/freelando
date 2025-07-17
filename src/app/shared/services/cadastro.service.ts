@@ -23,4 +23,15 @@ export class CadastroService {
       this.cadastroDataSubject.next(JSON.parse(savedData));
     }
   }
+
+  updateCadastroData(data:Partial<CadastroData>):void{
+    const currentDate = this.cadastroDataSubject.value;
+    const updateDate = {...currentDate,...data};
+    this.cadastroDataSubject.next(updateDate);
+    localStorage.setItem('cadastroData',JSON.stringify(updateDate));
+  }
+
+  getCadastroData():CadastroData{
+    return this.cadastroDataSubject.value;
+  }
 }
