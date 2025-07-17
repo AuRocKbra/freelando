@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { RadioOptionComponent } from '../../shared/components/radio-option/radio-option.component';
 import { ButtonComponent } from '../../shared/components/button/button.component';
+import { ExperienceLevelComponent } from "../../shared/components/experience-level/experience-level.component";
+import { Router } from '@angular/router';
 
 const MODULES = [
   CommonModule,
@@ -11,7 +13,8 @@ const MODULES = [
 
 const COMPONENTS = [
   RadioOptionComponent,
-  ButtonComponent
+  ButtonComponent,
+  ExperienceLevelComponent
 ]
 
 @Component({
@@ -20,7 +23,7 @@ const COMPONENTS = [
   imports: [
     ...MODULES,
     ...COMPONENTS
-  ],
+],
   templateUrl: './cadastro-form.component.html',
   styleUrls: ['./cadastro-form.component.scss']
 })
@@ -54,7 +57,7 @@ export class CadastroFormComponent implements OnInit{
     }
   ];
 
-  constructor(private fb: FormBuilder){}
+  constructor(private fb: FormBuilder, private router:Router){}
 
   ngOnInit(): void {
       this.cadastroForm = this.fb.group({
@@ -64,8 +67,20 @@ export class CadastroFormComponent implements OnInit{
   }
 
   onAreaChange(area:string){
-    this.cadastroForm.get('areaAtuacao')?.setValue(area);
+    this.cadastroForm.get('areasAtuacao')?.setValue(area);
   }
 
-  onProximo(){}
+  onProximo(){
+    if(this.cadastroForm.valid){
+      this.router.navigate(['/cadastro/dados-pessoais'])
+    }
+  }
+
+  onNivelChange(nivel:string){
+    this.cadastroForm.get('niveisExperiencia')?.setValue(nivel);
+  }
+
+  onAnterior(){
+    console.log(`Voltar para o passo anterior`);
+  }
 }
