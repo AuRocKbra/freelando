@@ -9,7 +9,50 @@
       </p>
 
       <form [formGroup]="dadosPessoaisForm" (ngSubmit)="onProximo()">
-
+        <div class="cadastro-form__fields">
+          <label class="cadastro-form__label">
+            Nome completo
+            <input 
+              type="text"
+              id="nomeCompleto"
+              class="cadastro-form__input"
+              formControlName="nomeCompleto"/>
+              <div *ngIf="dadosPessoaisForm.get('nomeCompleto')?.invalid && dadosPessoaisForm.get('nomeCompleto')?.touched"
+                class="cadastro-form__error">
+                Nome completo é obrigatório
+              </div>
+          </label>
+          <div class="cadastro-form__row">
+            <div class="cadastro-form__field--half">
+              <label class="cadastro-form__label">
+                Estado
+                <select id="estado"
+                  class="cadastro-form__input" formControlName="estado">
+                  <option value="" disabled selected>Selecione um estado</option>
+                  <option *ngFor="let estado of estados" [value]="estado.sigla">{{estado.nome}}</option>
+                </select>
+                <div *ngIf="dadosPessoaisForm.get('estado')?.invalid && dadosPessoaisForm.get('estado')?.touched"
+                  class="cadastro-form__error">
+                  Estado é obrigatório
+                </div>
+              </label>
+            </div>
+            <div class="cadastro-form__field cadastro-form__field--half">
+              <label class="cadastro-form__label">
+                Cidade
+                <input 
+                  type="text"
+                  id="cidade"
+                  class="cadastro-form__input"
+                  formControlName="cidade"/>
+                <div *ngIf="dadosPessoaisForm.get('cidade')?.invalid && dadosPessoaisForm.get('cidade')?.touched"
+                    class="cadastro-form__error">
+                    Cidade é obrigatório
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>  
         <div class="cadastro-form__actions">
           <app-button
             text="Anterior"
@@ -18,7 +61,6 @@
             iconPosition="left"
             (clicked)="onAnterior()">
           </app-button>
-
           <app-button
             text="Próximo"
             type="primary"
