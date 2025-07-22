@@ -52,6 +52,51 @@
               </label>
             </div>
           </div>
+          <div class="cadastro-form__field">
+            <label class="cadastro-form__label">
+              E-mail
+              <input 
+                type="text" 
+                class="cadastro-form__input"
+                id="email"
+                formControlName="email"/>
+              <div *ngIf="dadosPessoaisForm.get('email')?.invalid && dadosPessoaisForm.get('email')?.touched"
+                class="cadastro-form__error">
+                <span *ngIf="dadosPessoaisForm.get('email')?.errors?.['required']">E-mail é obrigatório</span>
+                <span *ngIf="dadosPessoaisForm.get('email')?.errors?.['email']">E-mail inválido</span>
+              </div>  
+            </label>
+          </div>
+          <div class="cadastro-form__row">
+            <div class="cadastro-form__field--half">
+              <label class="cadastro-form__label">
+                Senha
+                <input type="password"
+                  class="cadastro-form__input"
+                  id="senha"
+                  formControlName="senha"/>
+                <div *ngIf="dadosPessoaisForm.get('senha')?.invalid && dadosPessoaisForm.get('senha')?.touched" 
+                  class="cadastro-form__error">
+                    <span *ngIf="dadosPessoaisForm.get('senha')?.errors?.['required']">Senha é obrigatório</span>
+                    <span *ngIf="dadosPessoaisForm.get('senha')?.errors?.['minlength']">A senha deve ter no mínimo 6 caracteres</span>
+                </div>
+              </label>
+            </div>
+            <div class="cadastro-form__field cadastro-form__field--half">
+              <label class="cadastro-form__label">
+                Confirme senha
+                <input type="password"
+                  class="cadastro-form__input"
+                  id="confirmaSenha"
+                  formControlName="confirmaSenha"/>
+                <div *ngIf="dadosPessoaisForm.get('confirmaSenha')?.invalid && dadosPessoaisForm.get('confirmaSenha')?.touched" 
+                  class="cadastro-form__error">
+                    <span *ngIf="dadosPessoaisForm.get('confirmaSenha')?.errors?.['required']">Confirma senha é obrigatório</span>
+                    <span *ngIf="dadosPessoaisForm.get('confirmaSenha')?.errors?.['senhasNaoIguais']">As senha não combinam</span>
+                </div>
+              </label>
+            </div>
+          </div>
         </div>  
         <div class="cadastro-form__actions">
           <app-button
