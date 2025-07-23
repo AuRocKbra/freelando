@@ -92,7 +92,10 @@
                 <div *ngIf="dadosPessoaisForm.get('confirmaSenha')?.invalid && dadosPessoaisForm.get('confirmaSenha')?.touched" 
                   class="cadastro-form__error">
                     <span *ngIf="dadosPessoaisForm.get('confirmaSenha')?.errors?.['required']">Confirma senha é obrigatório</span>
-                    <span *ngIf="dadosPessoaisForm.get('confirmaSenha')?.errors?.['senhasNaoIguais']">As senha não combinam</span>
+                </div>
+                <div *ngIf="dadosPessoaisForm.errors?.['senhasDiferentes'] && dadosPessoaisForm.get('confirmaSenha')?.touched" 
+                  class="cadastro-form__error">
+                    As senhas não são iguais
                 </div>
               </label>
             </div>

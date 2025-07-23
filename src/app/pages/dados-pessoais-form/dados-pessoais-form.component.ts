@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AbstractControl, AbstractControlOptions, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, AbstractControlOptions, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { Router } from '@angular/router';
 import { CadastroService } from '../../shared/services/cadastro.service';
 
-export const senhaIguaisValidator:ValidatorFn = (control:AbstractControl):ValidationErrors | null =>{
+export const senhaIguaisValidator: ValidatorFn = (control:AbstractControl): ValidationErrors | null =>{
   const senha = control.get('senha');
   const confirmaSenha = control.get('confirmaSenha');
-  return senha && confirmaSenha && senha.value === confirmaSenha.value ? null : { senhasNaoIguais: true};
-}
+  console.log(confirmaSenha);
+  return senha && confirmaSenha && senha.value === confirmaSenha.value ? null : { senhasDiferentes: true};
+};
 
 @Component({
   selector: 'app-dados-pessoais-form',
@@ -57,17 +58,17 @@ export class DadosPessoaisFormComponent implements OnInit{
   constructor(private fb: FormBuilder, private router: Router, private cadastroService:CadastroService){}
 
   ngOnInit(): void {
-      const formOptions: AbstractControlOptions = {
-        validators:senhaIguaisValidator
-      };
-      this.dadosPessoaisForm = this.fb.group({
-        nomeCompleto: ['',Validators.required],
-        estado:['',Validators.required],
-        cidade:['',Validators.required],
-        email:['',[Validators.required,Validators.email]],
-        senha:['',[Validators.required,Validators.minLength(6)]],
-        confirmaSenha:['',Validators.required]
-      },formOptions);
+    const formOptions: AbstractControlOptions = {
+      validators:senhaIguaisValidator
+    };
+    this.dadosPessoaisForm = this.fb.group({
+      nomeCompleto: ['',Validators.required],
+      estado:['',Validators.required],
+      cidade:['',Validators.required],
+      email:['',[Validators.required,Validators.email]],
+      senha:['',[Validators.required,Validators.minLength(6)]],
+      confirmaSenha:['',Validators.required]
+    },formOptions);
   }
 
   onAnterior(): void {
