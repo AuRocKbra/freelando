@@ -6,11 +6,11 @@ import { Router } from '@angular/router';
 import { CadastroService } from '../../shared/services/cadastro.service';
 import { BehaviorSubject, Observable, startWith,switchMap,tap,of } from 'rxjs';
 import { Cidade, Estado, IbgeService } from '../../shared/services/ibge.service';
+import { cpfValidator } from '../../shared/validators/cpf.validator';
 
 export const senhaIguaisValidator: ValidatorFn = (control:AbstractControl): ValidationErrors | null =>{
   const senha = control.get('senha');
   const confirmaSenha = control.get('confirmaSenha');
-  console.log(confirmaSenha);
   return senha && confirmaSenha && senha.value === confirmaSenha.value ? null : { senhasDiferentes: true};
 };
 
@@ -27,8 +27,8 @@ export const senhaIguaisValidator: ValidatorFn = (control:AbstractControl): Vali
 })
 export class DadosPessoaisFormComponent implements OnInit{
   dadosPessoaisForm!: FormGroup;
-  estado$!:Observable<Estado[]>;
-  cidade$!:Observable<Cidade[]>;
+  estados$!:Observable<Estado[]>;
+  cidades$!:Observable<Cidade[]>;
   carregandoCidades$ = new BehaviorSubject<boolean>(false);
   constructor(private readonly fb: FormBuilder, 
     private readonly router: Router, 
@@ -41,6 +41,7 @@ export class DadosPessoaisFormComponent implements OnInit{
     };
     this.dadosPessoaisForm = this.fb.group({
       nomeCompleto: ['',Validators.required],
+      cpf:['',Validators.required,cpfValidator],
       estado:['',Validators.required],
       cidade:['',Validators.required],
       email:['',[Validators.required,Validators.email]],
@@ -78,13 +79,13 @@ export class DadosPessoaisFormComponent implements OnInit{
   }
 
   private carregarEstados():void{
-    this.estado$ = this.ibgeService.obterEstados();
+    this.estados$ = this.ibgeService.obterEstados();
   }
 
   private configurarListenerEstado():void{
     const estadoControl = this.dadosPessoaisForm.get('estado');
     if(estadoControl){
-      this.cidade$ = estadoControl.valueChanges.pipe(
+      this.cidades$ = estadoControl.valueChanges.pipe(
         startWith(''),
         tap(() =>{
           this.resetarCidade();
