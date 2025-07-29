@@ -41,12 +41,12 @@ export class DadosPessoaisFormComponent implements OnInit{
     };
     this.dadosPessoaisForm = this.fb.group({
       nomeCompleto: ['',Validators.required],
-      cpf:['',Validators.required,cpfValidator],
+      cpf:['',[Validators.required,cpfValidator]],
       estado:['',Validators.required],
       cidade:['',Validators.required],
       email:['',[Validators.required,Validators.email]],
       senha:['',[Validators.required,Validators.minLength(6)]],
-      confirmaSenha:['',Validators.required]
+      confirmaSenha:['',Validators.required],
     },formOptions);
 
     this.carregarEstados();

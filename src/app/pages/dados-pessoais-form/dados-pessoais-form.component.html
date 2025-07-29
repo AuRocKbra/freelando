@@ -36,10 +36,7 @@
               <div *ngIf="dadosPessoaisForm.get('cpf')?.invalid && dadosPessoaisForm.get('cpf')?.touched"
                 class="cadastro-form__error">
                 <span *ngIf="dadosPessoaisForm.get('cpf')?.errors?.['required']">CPF obirgatório</span>
-              </div>
-              <div *ngIf="dadosPessoaisForm.errors?.['cpfInvalido'] && dadosPessoaisForm.get('cpf')?.touched" 
-                  class="cadastro-form__error">
-                    CPF inválido
+                <span *ngIf="dadosPessoaisForm.get('cpf')?.errors?.['cpfInvalido']">CPF inválido</span>
               </div>
             </label>
           </div>
