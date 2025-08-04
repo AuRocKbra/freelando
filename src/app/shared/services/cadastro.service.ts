@@ -4,7 +4,7 @@ import { Habilidade } from '../models/habilidade.interface';
 import { Idioma } from '../models/idioma.interface';
 
 interface CadastroData{
-  foto?:string | ArrayBuffer;
+  foto?:string | ArrayBuffer | null;
   resumo?:string;
   habilidadesSelecionadas?:Array<Habilidade>;
   idiomas?:Array<Idioma>;
