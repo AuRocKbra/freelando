@@ -79,6 +79,12 @@ export class PerfilFormComponent implements OnInit{
     }
   }
 
+  toggleHabilidade(habilidade:Habilidade):void{
+    habilidade.selecionada = !habilidade.selecionada;
+    const habilidadesSelecionadas = this.habilidades.filter(h=>h.selecionada).map(h=>h.nome);
+    this.perfilForm.patchValue({habilidadesSelecionadas});
+  }
+
   private inicializarFormulario():void{
     this.perfilForm = this.fb.group({
       foto:[''],
