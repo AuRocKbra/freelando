@@ -35,7 +35,7 @@
               *ngFor="let habilidade of habilidades"
               [text]="habilidade.nome"
               [selected]="habilidade.selecionada"
-              [disabled]="!habilidade.selecionada && perfilForm.get('habilitadesSelecionadas')?.value.length>=1"
+              [disabled]="habilidade.desabilitada"
               (clicked)="toggleHabilidade(habilidade)">
             </app-chip>
           </div>

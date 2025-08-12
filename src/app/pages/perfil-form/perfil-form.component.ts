@@ -23,14 +23,15 @@ import { CadastroService } from '../../shared/services/cadastro.service';
   styleUrls: ['./perfil-form.component.scss']
 })
 export class PerfilFormComponent implements OnInit{
+
   perfilForm!: FormGroup;
   fotoPreview!: string | ArrayBuffer | null;
 
   habilidades: Habilidade[] = [
-    { nome: 'Fullstack', selecionada: false },
-    { nome: 'Front-end', selecionada: false },
-    { nome: 'React', selecionada: false },
-    { nome: 'Angular', selecionada: false }
+    { nome: 'Fullstack', selecionada: false, desabilitada: false },
+    { nome: 'Front-end', selecionada: false, desabilitada: false},
+    { nome: 'React', selecionada: false, desabilitada: false},
+    { nome: 'Angular', selecionada: false, desabilitada: false}
   ];
 
   niveisIdioma: string[] = [
@@ -83,6 +84,18 @@ export class PerfilFormComponent implements OnInit{
     habilidade.selecionada = !habilidade.selecionada;
     const habilidadesSelecionadas = this.habilidades.filter(h=>h.selecionada).map(h=>h.nome);
     this.perfilForm.patchValue({habilidadesSelecionadas});
+    if(habilidadesSelecionadas.length >=3){
+      this.habilidades.filter(habilidade =>{
+        if(!habilidade.selecionada){
+          habilidade.desabilitada = true;
+        }
+      });
+    }
+    else{
+      this.habilidades.filter(habilidade =>{
+        habilidade.desabilitada = false;
+      });
+    }
   }
 
   private inicializarFormulario():void{
