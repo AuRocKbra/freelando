@@ -40,6 +40,58 @@
             </app-chip>
           </div>
         </div>
+        <div class="cadastro-form__field">
+          <div class="cadastro-form__row cadastro-form__row--header">
+            <div class="cadastro-form__column">
+              <label class="cadastro-form__label">Idiomas</label>
+            </div>
+            <div class="cadastro-form__column">
+              <label class="cadastro-form__label">Nível</label>
+            </div>
+          </div>
+          <ng-container formArrayName="idiomas">
+            @for (idiomaForm of idiomasArray.controls; track $index) {
+              <div class="cadastro-form__row" [formGroupName]="$index">
+                <div class="cadastro-form__column">
+                  <select class="cadastro-form__select" formControlName="nome">
+                    <option value="" disabled>Selecione um idioma</option>
+                    @for (idioma of idiomas; track $index) {
+                      <option [value]="idioma">{{idioma}}</option>
+                    }
+                  </select>
+                  @if (idiomaForm.get('nome')?.invalid && idiomaForm.get('nome')?.touched) {
+                    <div class="cadastro-form__error">
+                      Idioma é obrigatório
+                    </div>
+                  }
+                </div>
+                <div class="cadastro-form__column">
+                  <select class="cadastro-form__select" formControlName="nivel">
+                    <option value="" disabled>Nível de conhecimento</option>
+                    @for (nivel of niveisIdioma; track $index) {
+                      <option [value]="nivel">{{nivel}}</option>
+                    }
+                  </select>
+                  @if (idiomaForm.get('nivel')?.invalid && idiomaForm.get('nivel')?.touched) {
+                    <div class="cadastro-form__error">
+                      Nível é obrigatório
+                    </div>
+                  }
+                </div>
+                <div class="cadastro-form__column cadastro-form__column--actions">
+                  @if($index > 0 || idiomaForm.get('nome')?.value != 'Português'){
+                    <button type="button" class="cadastro-form__icon-button" (click)="removerIdioma($index)"></button>
+                  }
+                </div>
+              </div>
+            }
+          </ng-container>
+          <div class="cadastro-form__add-button">
+            <button type="button" class="cadastro-form__text-button" (click)="adicionarIdioma()">
+              <i class="fas fa-plus-circle"></i>Adicionar idiomas
+            </button>
+          </div>
+        </div>
 
         <div class="cadastro-form__actions">
           <app-button
