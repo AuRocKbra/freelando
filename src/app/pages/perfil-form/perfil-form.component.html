@@ -27,7 +27,31 @@
             </div>
           </label>
         </div>
-
+        <div class="cadastro-form__field">
+          <label class="cadastro-form__label">
+            Resumo
+            <textarea id="resumo"
+              class="cadastro-form__textarea"
+              formControlName="resumo"
+              maxlength="70"
+              rows="3">
+            </textarea>
+            <div class="cadastro-form__field-info">
+              <span>Faça um resumo em até 70 caracteres</span>
+              <span>{{ caracteresRestantes }}</span>
+            </div>
+          </label>
+          @if(perfilForm.get('resumo')?.invalid && perfilForm.get('resumo')?.touched) {
+            <div class="cadastro-form__error">
+              @if(perfilForm.get('resumo')?.errors?.['required']){
+                <span>Resumo é obrigatório</span>
+              }
+              @else if (perfilForm.get('resumo')?.errors?.['maxlength']) {
+                <span>Resumo deve ter no máximo 70 caracteres</span>
+              }              
+            </div>
+          }
+        </div>
         <div class="cadastro-form__field">
           <label for="cadastro-form-label">Cite até 3 habilidades que você considera principais</label>
           <div class="cadastro-form__chips">
@@ -92,7 +116,36 @@
             </button>
           </div>
         </div>
-
+        <div class="cadastro-form__field">
+          <label class="cadastro-form__label">
+            Portfólio
+            <input 
+              type="url"
+              id="portfolio"
+              class="cadastro-form__input"
+              formControlName="portfolio"/>
+          </label>
+          @if(perfilForm.get('portfolio')?.invalid && perfilForm.get('portfolio')?.touched){
+            <div class="cadastro-form__error">
+              URL inválida. Inclua http:// ou https://
+            </div>
+          }
+        </div>
+        <div class="cadastro-form__field">
+          <label class="cadastro-form__label">
+            Linkedin
+            <input 
+              type="url"
+              id="linkedin"
+              class="cadastro-form__input"
+              formControlName="linkedin"/>
+          </label>
+          @if(perfilForm.get('linkedin')?.invalid && perfilForm.get('linkedin')?.touched){
+            <div class="cadastro-form__error">
+              URL do linkedin inválida.
+            </div>
+          }
+        </div>
         <div class="cadastro-form__actions">
           <app-button
             text="Anterior"

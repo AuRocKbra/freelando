@@ -27,6 +27,7 @@ export class PerfilFormComponent implements OnInit{
 
   perfilForm!: FormGroup;
   fotoPreview!: string | ArrayBuffer | null;
+  caracteresRestantes:number = 70;
 
   habilidades: Habilidade[] = [
     { nome: 'Fullstack', selecionada: false, desabilitada: false },
@@ -57,6 +58,9 @@ export class PerfilFormComponent implements OnInit{
   
   ngOnInit(): void {
       this.inicializarFormulario();
+      this.perfilForm.get('resumo')?.valueChanges.subscribe(resumo =>{
+        this.caracteresRestantes = 70 - resumo.length;
+      });
   }
 
   onAnterior(): void {
@@ -103,7 +107,7 @@ export class PerfilFormComponent implements OnInit{
     return this.perfilForm.get('idiomas') as FormArray;
   }
 
-  adadicionarIdioma(nome:string, nivel:string):void{
+  adicionarIdioma(nome:string = '', nivel:string =''):void{
     const idiomaForm = this.fb.group({
       nome:[nome,Validators.required],
       nivel:[nivel,Validators.required]
@@ -121,13 +125,13 @@ export class PerfilFormComponent implements OnInit{
   private inicializarFormulario():void{
     this.perfilForm = this.fb.group({
       foto:[''],
-      resumo:[''],
+      resumo:['',[Validators.required,Validators.maxLength(70)]],
       habilitadesSelecionadas:[[]],
       idiomas:this.fb.array([]),
-      portfolio:[''],
-      linkedin:['']
+      portfolio:['',Validators.pattern('https?://.+')],
+      linkedin:['',Validators.pattern('https?://(www\\.)?linkedin\\.com/in/.+')]
     });
-    this.adadicionarIdioma('Português','Nativo');
+    this.adicionarIdioma('Português','Nativo');
   }
 
   private extrairIdiomas():Idioma[]{
@@ -145,7 +149,7 @@ export class PerfilFormComponent implements OnInit{
       foto: this.fotoPreview,
       resumo: formValue.resumo,
       habilidadesSelecionadas: formValue.habilidadesSelecionadas,
-      idiomas:[],
+      idiomas:this.extrairIdiomas(),
       portfolio: formValue.portfolio,
       linkedin: formValue.linkedin
     });
