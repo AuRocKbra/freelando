@@ -5,7 +5,7 @@ import { FormConfig } from '../models/form-config.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class DynamicFormServiceTsService {
+export class DynamicFormService {
   private formConfigs:{[key:string]:Function} = {};
   constructor(private readonly fb: FormBuilder) { }
 

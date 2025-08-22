@@ -9,6 +9,10 @@ import { Cidade, Estado, IbgeService } from '../../shared/services/ibge.service'
 import { cpfValidator } from '../../shared/validators/cpf.validator';
 import { emailExistenteValidator } from '../../shared/validators/emailExistente.validator';
 import { EmailValidatorService } from '../../shared/services/email-validator.service';
+import { FormConfig } from '../../shared/models/form-config.interface';
+import { DynamicFormService } from '../../shared/services/dynamic-form.service';
+import { getDadosPessoaisConfig } from '../../config/dados-pessoais-form.config';
+import { FormFieldBase } from '../../shared/models/form-field-base.interface';
 
 export const senhaIguaisValidator: ValidatorFn = (control:AbstractControl): ValidationErrors | null =>{
   const senha = control.get('senha');
@@ -29,6 +33,7 @@ export const senhaIguaisValidator: ValidatorFn = (control:AbstractControl): Vali
 })
 export class DadosPessoaisFormComponent implements OnInit{
   dadosPessoaisForm!: FormGroup;
+  formConfig!:FormConfig;
   estados$!:Observable<Estado[]>;
   cidades$!:Observable<Cidade[]>;
   carregandoCidades$ = new BehaviorSubject<boolean>(false);
@@ -36,22 +41,14 @@ export class DadosPessoaisFormComponent implements OnInit{
     private readonly router: Router, 
     private readonly cadastroService:CadastroService,
     private readonly ibgeService:IbgeService,
-    private readonly emailService:EmailValidatorService){}
+    private readonly emailService:EmailValidatorService,
+    private readonly dynamicFormService:DynamicFormService){
+      this.dynamicFormService.registerFormConfig('dadosPessoaisForm',getDadosPessoaisConfig)
+    }
 
   ngOnInit(): void {
-    const formOptions: AbstractControlOptions = {
-      validators:senhaIguaisValidator
-    };
-    this.dadosPessoaisForm = this.fb.group({
-      nomeCompleto: ['',Validators.required],
-      cpf:['',[Validators.required,cpfValidator]],
-      estado:['',Validators.required],
-      cidade:['',Validators.required],
-      email:['',[Validators.required,Validators.email],[emailExistenteValidator(this.emailService)]],
-      senha:['',[Validators.required,Validators.minLength(6)]],
-      confirmaSenha:['',Validators.required],
-    },formOptions);
-
+    this.formConfig = this.dynamicFormService.getFormConfig('dadosPessoaisForm');
+    this.dadosPessoaisForm = this.dynamicFormService.createFormGroup(this.formConfig,{validators:senhaIguaisValidator});
     this.carregarEstados();
     this.configurarListenerEstado();
   }
@@ -68,6 +65,10 @@ export class DadosPessoaisFormComponent implements OnInit{
     }else{
       this.dadosPessoaisForm.markAllAsTouched();
     }
+  }
+
+  isFieldType(field:FormFieldBase,type:string):boolean{
+    return field.type === type;
   }
 
   private salvarDadosAtuais(){
