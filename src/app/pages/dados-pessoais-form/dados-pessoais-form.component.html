@@ -31,7 +31,77 @@
               </div>
             }
           </ng-container>
-        }  
+        }
+        <div class="cadastro-form__row">
+          @for (field of formConfig.fields; track $index) {
+            @if (isFieldType(field,'select')) {
+              <div class="cadastro-form__field" [ngClass]="{'cadastro-form__field--half': field.width === 'half'}">
+                @if (field.formControlName === 'estado') {
+                  <label [for]="field.formControlName" class="cadastro-form__label">{{field.label}}</label>
+                  <select 
+                    [id]="field.formControlName"
+                    class="cadastro-form__select"
+                    [formControlName]="field.formControlName">
+                    <option value="" disabled selected>Selecione uma opção</option>
+                    @if (estados$ | async) {
+                      @for (estado of estados$ |async; track $index) {
+                        <option [value]="estado.sigla">{{estado.nome}}</option>
+                      }
+                    }
+                  </select>
+                }
+                @else if (field.formControlName === 'cidade') {
+                  <label [for]="field.formControlName" class="cadastro-form__label">{{field.label}}</label>
+                  <select 
+                    [id]="field.formControlName"
+                    class="cadastro-form__select"
+                    [disabled]="(carregandoCidades$ | async) || !dadosPessoaisForm.get('estado')?.value"
+                    [formControlName]="field.formControlName">
+                    <option value="" disabled selected>{{ (carregandoCidades$ | async) ? 'Carregando...' : 'Selecione uma opção'}}</option>
+                    @if (cidades$ | async) {
+                      @for (cidade of cidades$ |async; track $index) {
+                        <option [value]="cidade.nome">{{cidade.nome}}</option>
+                      }
+                    }
+                  </select>
+                }
+                @if(dadosPessoaisForm.get(field.formControlName)?.invalid && dadosPessoaisForm.get(field.formControlName)?.touched) {
+                  <div class="cadastro-form__error">
+                    @for (error of field.errorMessages | keyvalue; track $index) {
+                      @if (dadosPessoaisForm.get(field.formControlName)?.errors?.[error.key]) {
+                        <span>{{error.value}}</span>
+                      }
+                    }
+                  </div>
+                }
+              </div>
+            }
+          }
+        </div>
+         <div class="cadastro-form__row">
+          @for (field of formConfig.fields; track $index) {
+            @if (isFieldType(field,'password')) {
+              <div class="cadastro-form__field" [ngClass]="{'cadastro-form__field--half': field.width === 'half'}">
+                <label [for]="field.formControlName">{{field.label}}</label>
+                <input
+                  [id]="field.formControlName"
+                  [type]="field.type"
+                  class="cadastro-form__input"
+                  [formControlName]="field.formControlName"
+                  [placeholder]="field.placeholder || ''">
+                @if(dadosPessoaisForm.get(field.formControlName)?.invalid && dadosPessoaisForm.get(field.formControlName)?.touched) {
+                  <div class="cadastro-form__error">
+                    @for (error of field.errorMessages | keyvalue; track $index) {
+                      @if (dadosPessoaisForm.get(field.formControlName)?.errors?.[error.key]) {
+                        <span>{{error.value}}</span>
+                      }
+                    }
+                  </div>
+                }
+              </div>
+            }
+          }
+        </div>  
         <div class="cadastro-form__actions">
           <app-button
             text="Anterior"
