@@ -101,6 +101,11 @@
               </div>
             }
           }
+          @if(dadosPessoaisForm.errors?.['senhasNaoIguais'] && dadosPessoaisForm.get('confirmaSenha')?.touched){
+            <div class="cadastro-form_error">
+              As seinhas não coincidem
+            </div>
+          }
         </div>  
         <div class="cadastro-form__actions">
           <app-button
